@@ -1,4 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
 import Deck from './features/Deck/Deck.js' 
 import logo from './logo.svg';
 import './App.css';
@@ -8,6 +13,7 @@ class App extends Component {
   constructor(){
     super();
     this.handler = this.handler.bind(this)
+    this.addCardToDue = this.addCardToDue.bind(this)
     this.state = {
       decks: [
         {
@@ -26,9 +32,9 @@ class App extends Component {
           ],
           backlog: [
             {
-              question: "What is my name?",
-              answer: "Cree",
-              due: "placeholder"
+              question: "Placeholder",
+              answer: "McGee",
+              due: "Placeholder"
             }
           ]
         }
@@ -37,9 +43,16 @@ class App extends Component {
   }
 
   handler(index) {
-    let decks = [...this.state.decks]
+    let { decks } = this.state
+
+    decks[0].backlog.push(...decks[0].due.slice(0, 1))
     decks[0].due = decks[0].due.slice(1)
+
     this.setState({decks})
+  }
+
+  addCardToDue() {
+    let { decks } = this.state
   }
 
   render() {
@@ -50,10 +63,7 @@ class App extends Component {
         {
           this.state.decks.map((deck, index) => {
             return (
-              <Deck
-                handler={this.handler}
-                deck={deck}
-              />
+              <Deck deck={deck} handler={this.handler} />
             )
           })
         }
